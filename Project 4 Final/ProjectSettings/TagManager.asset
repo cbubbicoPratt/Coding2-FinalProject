@@ -6,6 +6,9 @@ TagManager:
   tags:
   - PlatformEmpty
   - Platform
+  - SpawnPoint
+  - CornerPoint
+  - EndPoint
   layers:
   - Default
   - TransparentFX

@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class LevelGenerator : MonoBehaviour
 {
+    [Header("SpawnPoints")]
+    public GameObject endPlat;
+    public Transform[] endPoints;
+
     [Header("Prefabs")]
     public GameObject[] prefabs;
 
@@ -14,6 +18,7 @@ public class LevelGenerator : MonoBehaviour
 
     private void Awake()
     {
+        SpawnPlatforms();
         int tempRandom;
         _level = new bool[Random.Range(3, 9)];
         for (int i = 0; i < _level.Length; i++)
@@ -47,5 +52,11 @@ public class LevelGenerator : MonoBehaviour
                 _platforms.Add(platform);
             }
         }
+    }
+
+    public void SpawnPlatforms()
+    {
+        Transform tempEnd = endPoints[Random.Range(0, endPoints.Length - 1)];
+        Instantiate(endPlat, tempEnd);
     }
 }

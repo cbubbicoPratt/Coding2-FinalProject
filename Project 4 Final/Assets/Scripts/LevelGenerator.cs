@@ -2,30 +2,28 @@ using System.Collections.Generic;
 using UnityEditor.Rendering;
 using UnityEngine;
 
-public class LevelGenerator : MonoBehaviour
+public class TileGenerator : MonoBehaviour
 {
-    [Header("SpawnPoints")]
-    public GameObject endPlat;
-    public Transform[] endPoints;
-
     [Header("Prefabs")]
     public GameObject[] prefabs;
 
-    public Transform endPlatform;
+    [Header("Path Generator")]
+    public PathGenerator generator;
+
     private List<GameObject> _emptyPlatforms;
     private List<GameObject> _platforms;
-    private bool[] _level;
+    private int _level;
 
-    private void Awake()
+    public GameObject RandomTile()
     {
-        SpawnPlatforms();
+        //we want 
         int tempRandom;
-        _level = new bool[Random.Range(3, 9)];
-        for (int i = 0; i < _level.Length; i++)
+        _level = generator.pathTiles;
+        for (int i = 1; i <= _level; i++)
         {
-            if( i == 0 || i == _level.Length - 1 )
+            if (i == 0 || i == _level)
             {
-                _level[i] = true;
+                
             }
             else if (_level[i - 1] == false)
             {
@@ -39,24 +37,18 @@ public class LevelGenerator : MonoBehaviour
             }
             Debug.Log(_level[i]);
         }
-        
-        foreach(GameObject platform in prefabs)
+
+        foreach (GameObject platform in prefabs)
         {
             if (platform == null) return;
-            if(platform.tag == "PlatformEmpty")
+            if (platform.tag == "PlatformEmpty")
             {
                 _emptyPlatforms.Add(platform);
-            } 
+            }
             else if (platform.tag == "Platform")
             {
                 _platforms.Add(platform);
             }
         }
-    }
-
-    public void SpawnPlatforms()
-    {
-        Transform tempEnd = endPoints[Random.Range(0, endPoints.Length - 1)];
-        Instantiate(endPlat, tempEnd);
     }
 }

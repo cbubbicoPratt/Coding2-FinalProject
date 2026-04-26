@@ -424,18 +424,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 587582945}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ccb51ccd462ee84a911d1728cf2a31e, type: 3}
+  m_Script: {fileID: 11500000, guid: 426943801f920364aaf1cfbbede70d4c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LevelGenerator
-  endPlat: {fileID: 8451341920219272614, guid: 388674c8aeaf4cc45bac276ee3e4bc5f, type: 3}
-  endPoints:
-  - {fileID: 1223219406}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  prefabs: []
-  endPlatform: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp::PathGenerator
+  emptyPrefab: {fileID: 4674556928456510380, guid: ea18658390b094d44aaa4b8f47d70f20, type: 3}
+  pathPrefabs:
+  - {fileID: 4905970136231098701, guid: 59f46df53e175454db0a7580768cd103, type: 3}
+  - {fileID: 2074583368606318058, guid: 4bc57e180c93d4141b02b475aa21ca5f, type: 3}
+  startPoint: {fileID: 1369131416}
+  borderWidth: 3
+  pathTiles: 0
 --- !u!1 &817924747
 GameObject:
   m_ObjectHideFlags: 0
@@ -592,7 +590,7 @@ Transform:
   m_GameObject: {fileID: 817924747}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.99, z: 0}
+  m_LocalPosition: {x: 100, y: 0.99, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -851,51 +849,6 @@ Transform:
   - {fileID: 330585546}
   m_Father: {fileID: 817924753}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1223219405
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1223219406}
-  - component: {fileID: 1223219407}
-  m_Layer: 0
-  m_Name: EndPoint
-  m_TagString: EndPoint
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1223219406
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223219405}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 500}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1223219407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1223219405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 426943801f920364aaf1cfbbede70d4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PathGenerator
-  startPoint: {fileID: 1369131416}
 --- !u!1 &1291698802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1301,7 @@ Transform:
   m_GameObject: {fileID: 1369131410}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 100, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1720,4 +1673,3 @@ SceneRoots:
   - {fileID: 1613703855}
   - {fileID: 1369131416}
   - {fileID: 587582946}
-  - {fileID: 1223219406}

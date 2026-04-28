@@ -1,15 +1,20 @@
+using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class CCPlayer : MonoBehaviour
 {
     [Header("Movement")]
-    public float walkSpeed = 5;
-    public float runSpeed = 9;
+    public float walkSpeed = 9;
     public float jumpHeight = 5;
-
-    public Transform cameraTransform;
     public float lookSensitivity = 1;
+
+    [Header("Components")]
+    public Transform cameraTransform;
+    public Transform dashTarget;
+    public Image staminaBar;
 
     private CharacterController cc;
     private Vector2 moveInput;
@@ -18,9 +23,12 @@ public class CCPlayer : MonoBehaviour
     private float verticalVelocity; //current upward/downward speed
     private float gravity = -20; //constant downward acceleration
     private float pitch; //up and down
+    public float stamina = 1;
+    public float maxStamina = 1;
 
-    public bool isRunning;
+    public bool isDashing;
     public bool isJumping;
+    private bool wait;
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -34,6 +42,9 @@ public class CCPlayer : MonoBehaviour
     {
         HandleLook();
         HandleMovement();
+        if (stamina < 0) stamina = 0;
+        if(stamina > maxStamina) stamina = maxStamina;
+        staminaBar.fillAmount = stamina / maxStamina;
     }
 
     private void HandleLook()
@@ -67,18 +78,15 @@ public class CCPlayer : MonoBehaviour
 
         float currentSpeed = walkSpeed;
 
-        //if running is true set the current speed to run speed
-        if (isRunning)
-        {
-            currentSpeed = runSpeed;
-        }
-        else //if false, set back to walk speed
-        {
-            currentSpeed = walkSpeed;
-        }
-
         Vector3 move = transform.right * moveInput.x * currentSpeed + transform.forward * moveInput.y * currentSpeed;
+        Vector3 dashMove = dashTarget.transform.forward * 0.5f;
 
+        if (isDashing && stamina > 0)
+        {
+            cc.Move(dashMove);
+            stamina -= 3 * Time.deltaTime;
+        }
+        Debug.Log(stamina);
         //if jumping is true and we are grounded
         if (isJumping && grounded)
         {
@@ -89,12 +97,20 @@ public class CCPlayer : MonoBehaviour
             isJumping = false;
         }
 
-        //apply gravity to every frame
-        verticalVelocity += gravity * Time.deltaTime;
-        //convert vertical velocity into movement vector
-        Vector3 velocity = Vector3.up * verticalVelocity;
-        //NOW we are finally moving player
-        cc.Move((move + velocity) * Time.deltaTime);
+        if(grounded && stamina < maxStamina && !isDashing)
+        {
+            if (stamina == 0) StartCoroutine(SecondBuffer());
+            if(!wait) stamina += 2 * Time.deltaTime;
+        }
+        if (!isDashing || stamina <= 0)
+        {
+            //apply gravity to every frame
+            verticalVelocity += gravity * Time.deltaTime;
+            //convert vertical velocity into movement vector
+            Vector3 velocity = Vector3.up * verticalVelocity;
+            //NOW we are finally moving player
+            cc.Move((move + velocity) * Time.deltaTime);
+        }
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -115,11 +131,21 @@ public class CCPlayer : MonoBehaviour
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        isRunning = context.ReadValueAsButton();
+        isDashing = context.performed;
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         //Debug.Log("CC collided with: " + hit.gameObject.name);
     }
+
+    IEnumerator SecondBuffer()
+    {
+        wait = true;
+        yield return new WaitForSeconds(1);
+        stamina += 0.01f;
+        wait = false;
+        yield break;
+    }
 }
+

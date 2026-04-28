@@ -114,9 +114,9 @@ public class PathGenerator : MonoBehaviour
                 lastTileWasEmpty = true;
                 map[currentX, currentY] = TileType.Empty;
             }
-            if (direction == Direction.Up) Instantiate(prefab, new Vector3(currentY * 20, -0.5f, currentX * 20), Quaternion.Euler(0, -90, 0));
-            else if (direction == Direction.Down) Instantiate(prefab, new Vector3(currentY * 20, -0.5f, currentX * 20), Quaternion.Euler(0, 90, 0));
-            else Instantiate(prefab, new Vector3(currentY * 20, -0.5f, currentX * 20), Quaternion.identity);
+            if (direction == Direction.Up) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, -90, 0));
+            else if (direction == Direction.Down) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, 90, 0));
+            else Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.identity);
             secondLastDirection = lastDirection;
             lastDirection = direction;
             pathTiles++;

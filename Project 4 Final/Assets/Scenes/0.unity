@@ -700,8 +700,8 @@ GameObject:
   - component: {fileID: 817924749}
   - component: {fileID: 817924748}
   - component: {fileID: 817924754}
-  - component: {fileID: 817924755}
   - component: {fileID: 817924756}
+  - component: {fileID: 817924757}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1006,23 +1006,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 330585545}
---- !u!114 &817924755
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 817924747}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fad387c3a17ecab48a1d0e0b725249aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HeadBobController
-  _enable: 1
-  _amplitude: 0.005
-  _frequency: 10
-  _camera: {fileID: 330585546}
-  _cameraHolder: {fileID: 953381362}
 --- !u!114 &817924756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1035,6 +1018,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb849cc7035d0d4fad27db9764a2942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallRunning
+--- !u!114 &817924757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 817924747}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fad387c3a17ecab48a1d0e0b725249aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::HeadBobController
+  _enable: 1
+  _amplitude: 0.0025
+  _frequency: 10
+  _camera: {fileID: 330585546}
+  _cameraHolder: {fileID: 953381362}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

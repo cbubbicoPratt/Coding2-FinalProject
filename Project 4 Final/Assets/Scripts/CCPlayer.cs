@@ -17,6 +17,7 @@ public class CCPlayer : MonoBehaviour
     public Image staminaBar;
 
     private CharacterController cc;
+    private Vector3 startPos;
     private Vector2 moveInput;
     private Vector2 lookInput;
 
@@ -28,10 +29,12 @@ public class CCPlayer : MonoBehaviour
 
     public bool isDashing;
     public bool isJumping;
+    private bool buffer = false;
     private bool wait;
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
+        startPos = cc.transform.position;
 
         //optional cursor locking
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,6 +45,7 @@ public class CCPlayer : MonoBehaviour
     {
         HandleLook();
         HandleMovement();
+        ResetPositionCheck();
         if (stamina < 0) stamina = 0;
         if(stamina > maxStamina) stamina = maxStamina;
         staminaBar.fillAmount = stamina / maxStamina;
@@ -83,34 +87,51 @@ public class CCPlayer : MonoBehaviour
 
         if (isDashing && stamina > 0)
         {
-            cc.Move(dashMove);
-            stamina -= 3 * Time.deltaTime;
+            if (isJumping && grounded)
+            {
+                cc.Move(dashMove * 2);
+                stamina -= 5 * Time.deltaTime;
+                buffer = true;
+            }
+            else
+            {
+                cc.Move(dashMove);
+                stamina -= 3 * Time.deltaTime;
+                buffer = true;
+            }
         }
         Debug.Log(stamina);
         //if jumping is true and we are grounded
         if (isJumping && grounded)
         {
-            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            if (isDashing)
+            {
+                verticalVelocity = Mathf.Sqrt((jumpHeight * 2f) * -2f * gravity);
+            }
+            else
+            {
+                verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            }
         }
         else
         {
             isJumping = false;
         }
 
-        if(grounded && stamina < maxStamina && !isDashing)
+        if(stamina < maxStamina && !isDashing)
         {
-            if (stamina == 0) StartCoroutine(SecondBuffer());
-            if(!wait) stamina += 2 * Time.deltaTime;
+            if (buffer && !wait) StartCoroutine(SecondBuffer());
+            if(!wait) stamina += Time.deltaTime;
         }
         if (!isDashing || stamina <= 0)
         {
             //apply gravity to every frame
             verticalVelocity += gravity * Time.deltaTime;
-            //convert vertical velocity into movement vector
-            Vector3 velocity = Vector3.up * verticalVelocity;
-            //NOW we are finally moving player
-            cc.Move((move + velocity) * Time.deltaTime);
         }
+        //convert vertical velocity into movement vector
+        Vector3 velocity = Vector3.up * verticalVelocity;
+        //NOW we are finally moving player
+        cc.Move((move + velocity) * Time.deltaTime);
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -144,8 +165,18 @@ public class CCPlayer : MonoBehaviour
         wait = true;
         yield return new WaitForSeconds(1);
         stamina += 0.01f;
+        buffer = false;
         wait = false;
         yield break;
+    }
+
+    public void ResetPositionCheck()
+    {
+        if (cc.transform.position.y < -20)
+        {
+            cc.transform.position = startPos;
+            stamina = maxStamina;
+        }
     }
 }
 

@@ -1,0 +1,23 @@
+Feedback:
+(open this window back up when you're done so people see it)
+- i like the crosshair! very cute
+- restart dash cooldown once player dies
+- cooldown kind of long, seems like u need to use almost the whole bar when jumping, so lots of player downtime
+- maybe energy pickups would be fun, i kind of want to know the purpose of not having infinite dash, are we trying to speed run or like are we running from something?
+- most importantly i would consider that^ and adjust what u want the mechanic balance to look like to support that
+- being able to dash in any direction is cool but you dont realize that it is at first and can feel werid 
+- because of the fast pace I would even add a timer and maybe a leaderboard, a restart button for the rage quitters
+meowmeowmeowmeowmeow
+-EVERYTHING FEELS SO GOOD- a lot of movement tech comes from the unique interactions you get when combining movement systems in different situations, so look for a way to combine the dash with something else (This doesn't have to be a unique mechanic I really think this game could use wavedashing and jumpcancelling to keep your momentum) 
+	-Wavedashing would be done by just transferring your dash momentum to forward momentum on collision with the floor and stopping the slowdown at the end of the dash if you were to do that.
+
+
+i realllllly love this so far, and i think to make the dash more thrilling u can add some effects to the camera.
+
+The game feels amazing! I think adding more obstacle would be better
+
+the dash feels soo good. I hope you're adding a wall judo. that'll make everything feel smooth like butter
+
+I love the font? and how the concept of the game is very simple and straight forward. Easy to understand, tho I'm terrible at it. Looking forward for ur game!
+
+the player mechanics feel really good! i am struggling with jumping and dashing though. NEVERMIND....i got it and it felt great and fast! i imagine this to be a very fast paced game. it would be cool to make some of the  environment move for extra challenge. def level 2 type thing. 

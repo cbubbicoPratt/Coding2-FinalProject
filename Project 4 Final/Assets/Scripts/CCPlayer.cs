@@ -10,6 +10,7 @@ public class CCPlayer : MonoBehaviour
     public float walkSpeed = 9;
     public float jumpHeight = 5;
     public float lookSensitivity = 1;
+    public float wallRunSpeed = 9;
 
     [Header("Components")]
     public Transform cameraTransform;
@@ -29,6 +30,7 @@ public class CCPlayer : MonoBehaviour
 
     public bool isDashing;
     public bool isJumping;
+    public bool isWallRunning;
     private bool buffer = false;
     private bool wait;
     private void Awake()
@@ -123,7 +125,7 @@ public class CCPlayer : MonoBehaviour
             if (buffer && !wait) StartCoroutine(SecondBuffer());
             if(!wait) stamina += Time.deltaTime;
         }
-        if (!isDashing || stamina <= 0)
+        if (!isDashing || stamina <= 0 || !isWallRunning)
         {
             //apply gravity to every frame
             verticalVelocity += gravity * Time.deltaTime;

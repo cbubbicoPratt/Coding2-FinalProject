@@ -17,6 +17,7 @@ public class CCPlayer : MonoBehaviour
     public Transform dashTarget;
     public Image staminaBar;
 
+    private WallRunning wallRunning;
     private CharacterController cc;
     private Vector3 startPos;
     private Vector2 moveInput;
@@ -36,6 +37,7 @@ public class CCPlayer : MonoBehaviour
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
+        wallRunning = GetComponent<WallRunning>();
         startPos = cc.transform.position;
 
         //optional cursor locking
@@ -102,7 +104,6 @@ public class CCPlayer : MonoBehaviour
                 buffer = true;
             }
         }
-        Debug.Log(stamina);
         //if jumping is true and we are grounded
         if (isJumping && grounded)
         {
@@ -115,6 +116,19 @@ public class CCPlayer : MonoBehaviour
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
         }
+        else if(isJumping && isWallRunning)
+        {
+            isWallRunning = false;
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            if(wallRunning.wallLeft)
+            {
+                cc.Move(transform.right * Time.deltaTime);
+            }
+            else if (wallRunning.wallRight)
+            {
+                cc.Move(-transform.right * Time.deltaTime);
+            }
+        }
         else
         {
             isJumping = false;
@@ -125,15 +139,19 @@ public class CCPlayer : MonoBehaviour
             if (buffer && !wait) StartCoroutine(SecondBuffer());
             if(!wait) stamina += Time.deltaTime;
         }
-        if (!isDashing || stamina <= 0 || !isWallRunning)
+        if ((!isDashing || stamina <= 0) && !isWallRunning)
         {
             //apply gravity to every frame
             verticalVelocity += gravity * Time.deltaTime;
         }
-        //convert vertical velocity into movement vector
-        Vector3 velocity = Vector3.up * verticalVelocity;
-        //NOW we are finally moving player
-        cc.Move((move + velocity) * Time.deltaTime);
+            //convert vertical velocity into movement vector
+            Vector3 velocity = Vector3.up * verticalVelocity;
+            //NOW we are finally moving player
+            cc.Move((move + velocity) * Time.deltaTime);
+        if(isWallRunning)
+        {
+            verticalVelocity = 0;
+        }
     }
     public void OnMove(InputAction.CallbackContext context)
     {

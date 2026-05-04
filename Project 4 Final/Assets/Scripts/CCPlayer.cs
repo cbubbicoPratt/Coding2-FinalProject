@@ -1,4 +1,5 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,6 +35,7 @@ public class CCPlayer : MonoBehaviour
     public bool isWallRunning;
     private bool buffer = false;
     private bool wait;
+    
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
@@ -119,15 +121,15 @@ public class CCPlayer : MonoBehaviour
         else if(isJumping && isWallRunning)
         {
             isWallRunning = false;
-            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             if(wallRunning.wallLeft)
-            {
-                cc.Move(transform.right * Time.deltaTime);
-            }
-            else if (wallRunning.wallRight)
             {
                 cc.Move(-transform.right * Time.deltaTime);
             }
+            else if (wallRunning.wallRight)
+            {
+                cc.Move(transform.right * Time.deltaTime);
+            }
+            verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
         else
         {

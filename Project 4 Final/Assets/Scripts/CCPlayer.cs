@@ -214,6 +214,7 @@ public class CCPlayer : MonoBehaviour
         {
             cc.transform.position = startPos;
             stamina = maxStamina;
+            wallRunning.wallRunTimer = wallRunning.maxWallRunTime;
         }
     }
 }

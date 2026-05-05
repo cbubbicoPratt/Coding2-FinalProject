@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WallRunning : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class WallRunning : MonoBehaviour
     public LayerMask whatIsGround;
     public float wallRunForce;
     public float maxWallRunTime;
-    private float wallRunTimer;
+    public float wallRunTimer;
 
     [Header("Input")]
     private float verticalInput;
@@ -23,23 +24,31 @@ public class WallRunning : MonoBehaviour
     private RaycastHit rightWallHit;
     public bool wallLeft;
     public bool wallRight;
+    private bool wait = false;
+    private bool buffer = true;
 
     [Header("References")]
     public Transform cameraHolder;
     public Transform orientation;
     private CCPlayer player;
     private CharacterController cc;
+    public Image wallBar;
 
     private void Awake()
     {
         cc = GetComponent<CharacterController>();
         player = GetComponent<CCPlayer>();
+        wallRunTimer = maxWallRunTime;
     }
 
     private void Update()
     {
         CheckForWall();
         StateMachine();
+        WallRunStamina();
+        if (wallRunTimer < 0) wallRunTimer = 0;
+        if (wallRunTimer > maxWallRunTime) wallRunTimer = maxWallRunTime;
+        wallBar.fillAmount = wallRunTimer / maxWallRunTime;
         cameraHolder.localEulerAngles = new Vector3(0, 0, cameraHolder.localEulerAngles.z);
         //Debug.Log(cameraHolder.localEulerAngles);
     }
@@ -76,7 +85,7 @@ public class WallRunning : MonoBehaviour
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
         //state 1: wallrunning
-        if ((wallLeft || wallRight) && verticalInput > 0 && !cc.isGrounded)
+        if ((wallLeft || wallRight) && verticalInput > 0 && !cc.isGrounded && wallRunTimer > 0)
         {
             //start wallrun!
             if (!player.isWallRunning)
@@ -154,5 +163,32 @@ public class WallRunning : MonoBehaviour
 
         //hard code camera to final position
         cameraHolder.localEulerAngles = targetRotation;
+    }
+
+    private void WallRunStamina()
+    {
+        if (!cc.isGrounded) buffer = true;
+        if (player.isWallRunning)
+        {
+            wallRunTimer -= 2 * Time.deltaTime;
+        }   
+        else if (cc.isGrounded && wallRunTimer < maxWallRunTime)
+        {
+            if (buffer) StartCoroutine(SecondBuffer());
+            if (!wait)
+            {
+                wallRunTimer += 3 * Time.deltaTime;
+            }
+        }
+    }
+
+    IEnumerator SecondBuffer()
+    {
+        wait = true;
+        yield return new WaitForSeconds(1);
+        Debug.Log("Waited");
+        buffer = false;
+        wait = false;
+        yield break;
     }
 }

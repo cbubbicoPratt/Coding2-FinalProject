@@ -1565,7 +1565,7 @@ MonoBehaviour:
   wallCheckDistance: 0.7
   wallLeft: 0
   wallRight: 0
-  camera: {fileID: 330585546}
+  cameraHolder: {fileID: 953381362}
   orientation: {fileID: 817924753}
 --- !u!114 &817924757
 MonoBehaviour:

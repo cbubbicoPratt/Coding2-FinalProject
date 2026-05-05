@@ -38,6 +38,7 @@ public class CCPlayer : MonoBehaviour
     
     private void Awake()
     {
+        //getting our references
         cc = GetComponent<CharacterController>();
         wallRunning = GetComponent<WallRunning>();
         startPos = cc.transform.position;
@@ -91,8 +92,10 @@ public class CCPlayer : MonoBehaviour
         Vector3 move = transform.right * moveInput.x * currentSpeed + transform.forward * moveInput.y * currentSpeed;
         Vector3 dashMove = dashTarget.transform.forward * 0.5f;
 
+        //dash handler
         if (isDashing && stamina > 0)
         {
+            //if we jump and dash at the same time, we move twice the amount and lose more stamina
             if (isJumping && grounded)
             {
                 cc.Move(dashMove * 2);
@@ -101,6 +104,9 @@ public class CCPlayer : MonoBehaviour
             }
             else
             {
+                //dash movement separate than regular
+                //dashing consumes stamina
+                //wait a second to refill stamina after dashing
                 cc.Move(dashMove);
                 stamina -= 3 * Time.deltaTime;
                 buffer = true;
@@ -109,6 +115,7 @@ public class CCPlayer : MonoBehaviour
         //if jumping is true and we are grounded
         if (isJumping && grounded)
         {
+            //jump height increased when dashing
             if (isDashing)
             {
                 verticalVelocity = Mathf.Sqrt((jumpHeight * 2f) * -2f * gravity);
@@ -118,16 +125,19 @@ public class CCPlayer : MonoBehaviour
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
             }
         }
+        //if we wallrun and jump, we want the player to slightly move away from the wall depending on what side theyre on
+        //otherwise the jump is the same
         else if(isJumping && isWallRunning)
         {
-            isWallRunning = false;
             if(wallRunning.wallLeft)
             {
-                cc.Move(-transform.right * Time.deltaTime);
+                cc.Move(transform.right * (175 * Time.deltaTime));
+                //Debug.Log(transform.position);
             }
             else if (wallRunning.wallRight)
             {
-                cc.Move(transform.right * Time.deltaTime);
+                cc.Move(-transform.right * (175 * Time.deltaTime));
+                //Debug.Log(transform.position);
             }
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
@@ -136,11 +146,15 @@ public class CCPlayer : MonoBehaviour
             isJumping = false;
         }
 
+        //coroutine for waiting a second
+        //had to do some crazy logic to get the script to actually wait
         if(stamina < maxStamina && !isDashing)
         {
+            //refill stamina
             if (buffer && !wait) StartCoroutine(SecondBuffer());
             if(!wait) stamina += Time.deltaTime;
         }
+        //we dont want gravity when dashing or wall running
         if ((!isDashing || stamina <= 0) && !isWallRunning)
         {
             //apply gravity to every frame
@@ -150,8 +164,10 @@ public class CCPlayer : MonoBehaviour
             Vector3 velocity = Vector3.up * verticalVelocity;
             //NOW we are finally moving player
             cc.Move((move + velocity) * Time.deltaTime);
-        if(isWallRunning)
+        //no vertical movement when wallrunning
+        if(isWallRunning && !isJumping)
         {
+            //Debug.Log(transform.position);
             verticalVelocity = 0;
         }
     }

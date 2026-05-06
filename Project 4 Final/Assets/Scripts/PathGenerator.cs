@@ -100,8 +100,9 @@ public class PathGenerator : MonoBehaviour
             }
 
             int randomIndex = UnityEngine.Random.Range(0, pathPrefabs.Length);
-            int emptyCheck = UnityEngine.Random.Range(0, 2);
+            //int emptyCheck = UnityEngine.Random.Range(0, 2);
             GameObject prefab = pathPrefabs[randomIndex];
+            /*
             if(lastTileWasEmpty || emptyCheck == 0 || currentX == 1 || currentX == map.GetLength(0) - 1)
             {
                 prefab = pathPrefabs[randomIndex];
@@ -113,7 +114,7 @@ public class PathGenerator : MonoBehaviour
                 prefab = emptyPrefab;
                 lastTileWasEmpty = true;
                 map[currentX, currentY] = TileType.Empty;
-            }
+            }*/
             if (direction == Direction.Up) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, -90, 0));
             else if (direction == Direction.Down) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, 90, 0));
             else Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.identity);

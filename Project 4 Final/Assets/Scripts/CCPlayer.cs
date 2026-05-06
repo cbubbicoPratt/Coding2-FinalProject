@@ -19,6 +19,7 @@ public class CCPlayer : MonoBehaviour
     public Image staminaBar;
 
     private WallRunning wallRunning;
+    private Sliding sliding;
     private CharacterController cc;
     private Vector3 startPos;
     private Vector2 moveInput;
@@ -33,6 +34,7 @@ public class CCPlayer : MonoBehaviour
     public bool isDashing;
     public bool isJumping;
     public bool isWallRunning;
+    public bool isSliding;
     private bool buffer = false;
     private bool wait;
     
@@ -41,6 +43,7 @@ public class CCPlayer : MonoBehaviour
         //getting our references
         cc = GetComponent<CharacterController>();
         wallRunning = GetComponent<WallRunning>();
+        sliding = GetComponent<Sliding>();
         startPos = cc.transform.position;
 
         //optional cursor locking
@@ -127,9 +130,9 @@ public class CCPlayer : MonoBehaviour
         }
         //if we wallrun and jump, we want the player to slightly move away from the wall depending on what side theyre on
         //otherwise the jump is the same
-        else if(isJumping && isWallRunning)
+        else if (isJumping && isWallRunning)
         {
-            if(wallRunning.wallLeft)
+            if (wallRunning.wallLeft)
             {
                 cc.Move(transform.right * (175 * Time.deltaTime));
                 //Debug.Log(transform.position);
@@ -184,8 +187,7 @@ public class CCPlayer : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         //when the key is hit, isJumping = true
-        //can only jump if the menu isn't open (prevents jumping after space is pressed in the menu and then exiting)
-        if (context.performed && Cursor.lockState == CursorLockMode.Locked) isJumping = true;
+        if (context.performed) isJumping = true;
     }
 
     public void OnSprint(InputAction.CallbackContext context)

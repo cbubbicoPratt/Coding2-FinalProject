@@ -15,7 +15,7 @@ public class CCPlayer : MonoBehaviour
 
     [Header("Components")]
     public Transform cameraTransform;
-    public Transform dashTarget;
+    public Transform orientation;
     public Image staminaBar;
 
     private WallRunning wallRunning;
@@ -93,7 +93,7 @@ public class CCPlayer : MonoBehaviour
         float currentSpeed = walkSpeed;
 
         Vector3 move = transform.right * moveInput.x * currentSpeed + transform.forward * moveInput.y * currentSpeed;
-        Vector3 dashMove = dashTarget.transform.forward * 0.5f;
+        Vector3 dashMove = cameraTransform.transform.forward * 0.25f;
 
         //dash handler
         if (isDashing && stamina > 0)
@@ -111,7 +111,7 @@ public class CCPlayer : MonoBehaviour
                 //dashing consumes stamina
                 //wait a second to refill stamina after dashing
                 cc.Move(dashMove);
-                stamina -= 3 * Time.deltaTime;
+                stamina -= 2 * Time.deltaTime;
                 buffer = true;
             }
         }
@@ -144,6 +144,10 @@ public class CCPlayer : MonoBehaviour
             }
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
         }
+        if(isJumping && isSliding)
+        {
+            move += sliding.storedInput;
+        }
         else
         {
             isJumping = false;
@@ -155,7 +159,7 @@ public class CCPlayer : MonoBehaviour
         {
             //refill stamina
             if (buffer && !wait) StartCoroutine(SecondBuffer());
-            if(!wait) stamina += Time.deltaTime;
+            if(!wait) stamina += 2 *Time.deltaTime;
         }
         //we dont want gravity when dashing or wall running
         if ((!isDashing || stamina <= 0) && !isWallRunning)

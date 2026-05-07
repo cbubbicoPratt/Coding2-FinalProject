@@ -186,7 +186,6 @@ public class WallRunning : MonoBehaviour
     {
         wait = true;
         yield return new WaitForSeconds(1);
-        Debug.Log("Waited");
         buffer = false;
         wait = false;
         yield break;

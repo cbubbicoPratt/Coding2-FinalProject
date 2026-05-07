@@ -99,8 +99,10 @@ public class PathGenerator : MonoBehaviour
                     currentX++; break;
             }
 
-            int randomIndex = UnityEngine.Random.Range(0, pathPrefabs.Length);
+            int randomIndex = UnityEngine.Random.Range(2, pathPrefabs.Length);
             //int emptyCheck = UnityEngine.Random.Range(0, 2);
+            if (currentX == 1) randomIndex = 0;
+            else if (currentX == map.GetLength(0) - 1) randomIndex = 1;
             GameObject prefab = pathPrefabs[randomIndex];
             /*
             if(lastTileWasEmpty || emptyCheck == 0 || currentX == 1 || currentX == map.GetLength(0) - 1)

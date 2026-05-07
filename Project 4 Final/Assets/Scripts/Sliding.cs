@@ -42,7 +42,6 @@ public class Sliding : MonoBehaviour
         if (slidePressed && cc.isGrounded/*&& (horizontalInput != 0 || verticalInput != 0)*/) StartSlide();
         else if ((!slidePressed && sliding) || (ccPlayer.isJumping && sliding))
         {
-            storedInput = cc.velocity;
             StopSlide();
         }
     }
@@ -64,7 +63,7 @@ public class Sliding : MonoBehaviour
     private void SlidingMovement()
     { 
         Vector3 inputDirection;
-        if (verticalInput == 0 && horizontalInput == 0 && cc.velocity == Vector3.zero)
+        if (verticalInput == 0 && horizontalInput == 0)
         {
             inputDirection = orientation.forward;
         }
@@ -74,6 +73,7 @@ public class Sliding : MonoBehaviour
         }
 
         cc.Move(inputDirection.normalized * slideForce);
+        storedInput = cc.velocity;
     }
 
     private void StopSlide()

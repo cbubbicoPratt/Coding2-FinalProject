@@ -9,7 +9,7 @@ public class PathGenerator : MonoBehaviour
     public GameObject[] pathPrefabs;
     public Transform startPoint;
     public int borderWidth = 3;
-    private Vector2 gridSize = new Vector2(25, 10);
+    private Vector2 gridSize = new Vector2(20, 10);
     private GameObject player;
 
     //accessor variables
@@ -19,7 +19,6 @@ public class PathGenerator : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         if (borderWidth * 2 >= gridSize.x) throw new System.Exception("2 * border width must be less than grid x");
-        GenerateMap();
     }
     private enum Direction
     {
@@ -34,8 +33,9 @@ public class PathGenerator : MonoBehaviour
         Path = 1
     }
 
-    private void GenerateMap()
+    public void GenerateMap()
     {
+        ResetPath();
         TileType[,] map = new TileType[(int)gridSize.x, (int)gridSize.y];
         int startPosY = map.GetLength(1) / 2;
         int currentY = startPosY;
@@ -46,8 +46,6 @@ public class PathGenerator : MonoBehaviour
 
         bool IsCurrentPosOnTop(int y) => y == borderWidth;
         bool IsCurrentPosOnBottom(int y) => y == map.GetLength(1) - 1 - borderWidth;
-
-        bool lastTileWasEmpty = false;
 
         map[currentX, currentY] = TileType.Path;
 
@@ -117,12 +115,20 @@ public class PathGenerator : MonoBehaviour
                 lastTileWasEmpty = true;
                 map[currentX, currentY] = TileType.Empty;
             }*/
-            if (direction == Direction.Up) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, -90, 0));
-            else if (direction == Direction.Down) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, 90, 0));
-            else Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.identity);
+            if (direction == Direction.Up) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, -90, 0), transform);
+            else if (direction == Direction.Down) Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.Euler(0, 90, 0), transform);
+            else Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.identity, transform);
             secondLastDirection = lastDirection;
             lastDirection = direction;
             pathTiles++;
+        }
+    }
+
+    public void ResetPath()
+    {
+        foreach(Transform child in transform)
+        {
+            if (child != null) Destroy(child.gameObject);
         }
     }
 }

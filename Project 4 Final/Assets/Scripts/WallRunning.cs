@@ -24,11 +24,11 @@ public class WallRunning : MonoBehaviour
     private RaycastHit rightWallHit;
     public bool wallLeft;
     public bool wallRight;
-    private bool wait = false;
+    private bool wait = true;
     private bool buffer = true;
 
     [Header("References")]
-    public Transform cameraHolder;
+    //public Transform cameraHolder;
     public Transform orientation;
     private CCPlayer player;
     private CharacterController cc;
@@ -49,7 +49,7 @@ public class WallRunning : MonoBehaviour
         if (wallRunTimer < 0) wallRunTimer = 0;
         if (wallRunTimer > maxWallRunTime) wallRunTimer = maxWallRunTime;
         wallBar.fillAmount = wallRunTimer / maxWallRunTime;
-        cameraHolder.localEulerAngles = new Vector3(0, 0, cameraHolder.localEulerAngles.z);
+        //cameraHolder.localEulerAngles = new Vector3(0, 0, cameraHolder.localEulerAngles.z);
         //Debug.Log(cameraHolder.localEulerAngles);
     }
     
@@ -109,7 +109,7 @@ public class WallRunning : MonoBehaviour
         //Debug.Log("Started");
         player.isWallRunning = true;
         //turn camera holder right
-        if(wallRight)
+        /*if(wallRight)
         {
             StartCoroutine(CameraCoroutine(new Vector3(0, 0, 20), 0.2f));
         } 
@@ -119,6 +119,7 @@ public class WallRunning : MonoBehaviour
 
             StartCoroutine(CameraCoroutine(new Vector3(0, 0, -20), 0.2f));
         }
+        */
     }
 
     /*
@@ -143,11 +144,12 @@ public class WallRunning : MonoBehaviour
         //when we stop wallrunning, we want the camera to lerp back to its original position
         //if its to the left, it has to be 360 so it doesnt spin all the way around
         //otherwise its zero
-        if (cameraHolder.localEulerAngles.z > 180) StartCoroutine(CameraCoroutine(new Vector3(0, 0, 360), 0.2f));
-        else StartCoroutine(CameraCoroutine(new Vector3(0, 0, 0), 0.2f));
+        //if (cameraHolder.localEulerAngles.z > 180) StartCoroutine(CameraCoroutine(new Vector3(0, 0, 360), 0.2f));
+        //else StartCoroutine(CameraCoroutine(new Vector3(0, 0, 0), 0.2f));
     }
 
     //coroutine to move camera from where it is to a new position
+    /*
     IEnumerator CameraCoroutine(Vector3 targetRotation, float duration)
     {
         Vector3 initialRotation = cameraHolder.localEulerAngles;
@@ -164,17 +166,18 @@ public class WallRunning : MonoBehaviour
         //hard code camera to final position
         cameraHolder.localEulerAngles = targetRotation;
     }
-
+    */
     private void WallRunStamina()
     {
         if (!cc.isGrounded) buffer = true;
         if (player.isWallRunning)
         {
             wallRunTimer -= 2 * Time.deltaTime;
+            wait = true;
         }   
-        else if (cc.isGrounded && wallRunTimer < maxWallRunTime)
+        else if (wallRunTimer < maxWallRunTime)
         {
-            if (buffer) StartCoroutine(SecondBuffer());
+            if (cc.isGrounded && buffer) StartCoroutine(SecondBuffer());
             if (!wait)
             {
                 wallRunTimer += 3 * Time.deltaTime;
@@ -186,6 +189,7 @@ public class WallRunning : MonoBehaviour
     {
         wait = true;
         yield return new WaitForSeconds(1);
+        if (player.isWallRunning) yield break;
         buffer = false;
         wait = false;
         yield break;

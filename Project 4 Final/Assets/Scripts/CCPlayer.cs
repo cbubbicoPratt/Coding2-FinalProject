@@ -55,7 +55,7 @@ public class CCPlayer : MonoBehaviour
     {
         HandleLook();
         HandleMovement();
-        ResetPositionCheck();
+        if (cc.transform.position.y < -20) ResetPosition();
         if (stamina < 0) stamina = 0;
         if(stamina > maxStamina) stamina = maxStamina;
         staminaBar.fillAmount = stamina / maxStamina;
@@ -214,14 +214,11 @@ public class CCPlayer : MonoBehaviour
         yield break;
     }
 
-    public void ResetPositionCheck()
+    public void ResetPosition()
     {
-        if (cc.transform.position.y < -20)
-        {
-            cc.transform.position = startPos;
-            stamina = maxStamina;
-            wallRunning.wallRunTimer = wallRunning.maxWallRunTime;
-        }
+        cc.transform.position = startPos;
+        stamina = maxStamina;
+        wallRunning.wallRunTimer = wallRunning.maxWallRunTime;
     }
 }
 

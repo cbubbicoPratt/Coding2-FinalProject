@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EndPoint : MonoBehaviour
 {
-    private CCPlayer player;
+    public CCPlayer player;
     private RoundManager roundManager;
 
     private void Awake()

@@ -15,13 +15,14 @@ public class CCPlayer : MonoBehaviour
 
     [Header("Components")]
     public Transform cameraTransform;
+    public Transform cameraTargetTransform;
     public Transform orientation;
     public Image staminaBar;
 
     private WallRunning wallRunning;
     private Sliding sliding;
     private CharacterController cc;
-    private Vector3 startPos;
+    public Vector3 startPos;
     private Vector2 moveInput;
     private Vector2 lookInput;
 
@@ -93,7 +94,7 @@ public class CCPlayer : MonoBehaviour
         float currentSpeed = walkSpeed;
 
         Vector3 move = transform.right * moveInput.x * currentSpeed + transform.forward * moveInput.y * currentSpeed;
-        Vector3 dashMove = cameraTransform.transform.forward * 0.25f;
+        Vector3 dashMove = cameraTargetTransform.transform.forward * 0.25f;
 
         //dash handler
         if (isDashing && stamina > 0)

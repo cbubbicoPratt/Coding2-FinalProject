@@ -217,7 +217,9 @@ public class CCPlayer : MonoBehaviour
 
     public void ResetPosition()
     {
-        cc.transform.position = startPos;
+        cc.enabled = false;
+        transform.position = startPos;
+        cc.enabled = true;
         stamina = maxStamina;
         wallRunning.wallRunTimer = wallRunning.maxWallRunTime;
     }

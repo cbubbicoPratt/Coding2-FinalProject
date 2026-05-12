@@ -7,6 +7,7 @@ public class PathGenerator : MonoBehaviour
 {
     public GameObject emptyPrefab;
     public GameObject[] pathPrefabs;
+    public GameObject endPoint;
     public Transform startPoint;
     public int borderWidth = 3;
     private Vector2 gridSize = new Vector2(20, 10);
@@ -120,6 +121,7 @@ public class PathGenerator : MonoBehaviour
             else Instantiate(prefab, new Vector3(currentY * 40, -0.5f, currentX * 40), Quaternion.identity, transform);
             secondLastDirection = lastDirection;
             lastDirection = direction;
+            if (currentX == map.GetLength(0) - 1) Instantiate(endPoint, new Vector3(currentY * 40, 2, currentX * 40), Quaternion.identity, transform);
             pathTiles++;
         }
     }

@@ -16,6 +16,7 @@ public class EndPoint : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             player.ResetPosition();
+            Debug.Log(player.transform.position);
             roundManager.NewRound();
             Destroy(gameObject);
         }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Editor;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -18,8 +19,8 @@ namespace StarterAssets
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
 
-        [Tooltip("Sprint speed of the character in m/s")]
-        public float SprintSpeed = 5.335f;
+        //[Tooltip("Sprint speed of the character in m/s")]
+        //public float SprintSpeed = 5.335f;
 
         [Tooltip("How fast the character turns to face movement direction")]
         [Range(0.0f, 0.3f)]
@@ -78,6 +79,9 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
+        [Tooltip("Raycast to check direction for dashing")]
+        public Ray dashPath;
+
         // cinemachine
         private float _cinemachineTargetYaw;
         private float _cinemachineTargetPitch;
@@ -89,6 +93,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private bool _isDashing = false;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -158,7 +163,8 @@ namespace StarterAssets
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
-
+            dashPath = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward * 8);
+            Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 8, Color.green);
             JumpAndGravity();
             GroundedCheck();
             Move();
@@ -217,13 +223,34 @@ namespace StarterAssets
         private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            //float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+            float targetSpeed = MoveSpeed;
 
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
-            // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
-            // if there is no input, set the target speed to 0
-            if (_input.move == Vector2.zero) targetSpeed = 0.0f;
+
+            if (_input.sprint)
+            {
+                _isDashing = true;
+                Debug.Log(dashPath.direction);
+                transform.LookAt(dashPath.direction);
+                _controller.Move(dashPath.direction);
+                /*RaycastHit hit;
+                if(Physics.Raycast(dashPath,out hit, 8, GroundLayers))
+                {
+                    _controller.Move(transform.position - hit.point);
+
+                }
+                else
+                {
+                    _controller.Move(dashPath.direction * 0.5f);
+
+                }*/
+            }
+            else _isDashing = false;
+                // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
+                // if there is no input, set the target speed to 0
+                if (_input.move == Vector2.zero) targetSpeed = 0.0f;
 
             // a reference to the players current horizontal velocity
             float currentHorizontalSpeed = new Vector3(_controller.velocity.x, 0.0f, _controller.velocity.z).magnitude;
@@ -344,6 +371,7 @@ namespace StarterAssets
                 _input.jump = false;
             }
 
+            if(_isDashing) _verticalVelocity = 0.0f;
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
             if (_verticalVelocity < _terminalVelocity)
             {

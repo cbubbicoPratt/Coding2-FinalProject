@@ -79,8 +79,8 @@ namespace StarterAssets
         [Tooltip("For locking the camera position on all axis")]
         public bool LockCameraPosition = false;
 
-        [Tooltip("Raycast to check direction for dashing")]
-        public Ray dashPath;
+        /*[Tooltip("Target for Dashing")]
+        public Transform dashTarget;*/
 
         // cinemachine
         private float _cinemachineTargetYaw;
@@ -163,8 +163,6 @@ namespace StarterAssets
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
-            dashPath = new Ray(_mainCamera.transform.position, _mainCamera.transform.forward * 8);
-            Debug.DrawRay(_mainCamera.transform.position, _mainCamera.transform.forward * 8, Color.green);
             JumpAndGravity();
             GroundedCheck();
             Move();
@@ -229,13 +227,12 @@ namespace StarterAssets
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
 
-            if (_input.sprint)
+            /*if (_input.sprint)
             {
                 _isDashing = true;
-                Debug.Log(dashPath.direction);
-                transform.LookAt(dashPath.direction);
-                _controller.Move(dashPath.direction);
-                /*RaycastHit hit;
+                transform.LookAt(dashTarget);
+                _controller.Move(dashTarget.position * (_speed * Time.deltaTime));
+                RaycastHit hit;
                 if(Physics.Raycast(dashPath,out hit, 8, GroundLayers))
                 {
                     _controller.Move(transform.position - hit.point);
@@ -245,9 +242,9 @@ namespace StarterAssets
                 {
                     _controller.Move(dashPath.direction * 0.5f);
 
-                }*/
+                }
             }
-            else _isDashing = false;
+            else _isDashing = false;*/
                 // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
                 // if there is no input, set the target speed to 0
                 if (_input.move == Vector2.zero) targetSpeed = 0.0f;

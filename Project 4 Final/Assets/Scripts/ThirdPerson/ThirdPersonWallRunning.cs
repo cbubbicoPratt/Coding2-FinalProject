@@ -1,0 +1,120 @@
+using System;
+using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class ThirdPersonWallRunning : MonoBehaviour
+{
+    [Header("Wallrunning")]
+    public LayerMask whatIsWall;
+    public LayerMask whatIsGround;
+    public float wallRunForce;
+    public float maxWallRunTime;
+    public float wallRunTimer;
+
+    [Header("Input")]
+    private float _verticalInput;
+    private float _horizontalInput;
+
+    [Header("Detection")]
+    public float wallCheckDistance;
+    //public float minJumpHeight;
+    private RaycastHit _leftWallHit;
+    private RaycastHit _rightWallHit;
+    public bool wallLeft;
+    public bool wallRight;
+    private bool _wait = true;
+    private bool _buffer = true;
+
+    [Header("References")]
+    //public Transform cameraHolder;
+    public Transform orientation;
+    private ThirdPersonMovement _player;
+    private CharacterController _controller;
+    public Image wallBar;
+
+    private void Awake()
+    {
+        _controller = GetComponent<CharacterController>();
+        _player = GetComponent<ThirdPersonMovement>();
+        wallRunTimer = maxWallRunTime;
+    }
+    private void Update()
+    {
+        CheckForWall();
+        StateMachine();
+        WallRunStamina();
+        if (wallRunTimer < 0) wallRunTimer = 0;
+        if (wallRunTimer > maxWallRunTime) wallRunTimer = maxWallRunTime;
+        wallBar.fillAmount = wallRunTimer / maxWallRunTime;
+    }
+
+    private void CheckForWall()
+    {
+        wallRight = Physics.Raycast(transform.position, orientation.right, out _rightWallHit, wallCheckDistance, whatIsWall);
+        wallLeft = Physics.Raycast(transform.position, -orientation.right, out _leftWallHit, wallCheckDistance, whatIsWall);
+    }
+
+    private void StateMachine()
+    {
+        //getting inputs
+        _horizontalInput = Input.GetAxisRaw("Horizontal");
+        _verticalInput = Input.GetAxisRaw("Vertical");
+        //state 1: wallrunning
+        if ((wallLeft || wallRight) && _verticalInput > 0 && !_controller.isGrounded && wallRunTimer > 0)
+        {
+            //start wallrun!
+            if (!_player.isWallRunning)
+            {
+                StartWallRun();
+            }
+        }
+
+        //state 2: none
+        else
+        {
+            if (_player.isWallRunning)
+            {
+                StopWallRun();
+            }
+        }
+    }
+
+    private void StartWallRun()
+    {
+        _player.isWallRunning = true;
+    }
+
+    private void StopWallRun()
+    {
+        _player.isWallRunning = false;
+    }
+
+    private void WallRunStamina()
+    {
+        if (!_controller.isGrounded) _buffer = true;
+        if (_player.isWallRunning)
+        {
+            wallRunTimer -= 2 * Time.deltaTime;
+            _wait = true;
+        }
+        else if (wallRunTimer < maxWallRunTime)
+        {
+            if (_controller.isGrounded && _buffer) StartCoroutine(SecondBuffer());
+            if (!_wait)
+            {
+                wallRunTimer += 3 * Time.deltaTime;
+            }
+        }
+    }
+
+    IEnumerator SecondBuffer()
+    {
+        _wait = true;
+        yield return new WaitForSeconds(1);
+        if (_player.isWallRunning) yield break;
+        _buffer = false;
+        _wait = false;
+        yield break;
+    }
+}

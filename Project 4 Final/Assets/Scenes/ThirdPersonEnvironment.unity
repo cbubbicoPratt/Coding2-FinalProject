@@ -352,7 +352,7 @@ Light:
   serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 1
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -632,7 +632,7 @@ MonoBehaviour:
   - {fileID: 737157071133527381, guid: 6eb2b70c80a5e43459b217f852612e3d, type: 3}
   - {fileID: 737157071133527381, guid: 1fae899216be9c04eba7f1d6ac5c0ecd, type: 3}
   - {fileID: 737157071133527381, guid: c1f6f2066d339ca4292a9ca8e6b718f1, type: 3}
-  endPoint: {fileID: 0}
+  endPoint: {fileID: 8817865584382760254, guid: 08e4dc3177051cd49956d9a034a71927, type: 3}
   startPoint: {fileID: 1369131416}
   borderWidth: 3
   pathTiles: 0
@@ -702,8 +702,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1084,8 +1084,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1296,8 +1296,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1433,7 +1433,7 @@ GameObject:
   - component: {fileID: 997768936}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1716,8 +1716,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonSliding
   orientation: {fileID: 1656073194}
+  camTransform: {fileID: 652901750}
   slideForce: 1
-  slideYScale: 0.5
+  slideYScale: 0.25
   storedInput: {x: 0, y: 0, z: 0}
 --- !u!1 &1291698802
 GameObject:

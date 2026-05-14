@@ -10,7 +10,7 @@ public class PathGenerator : MonoBehaviour
     public GameObject endPoint;
     public Transform startPoint;
     public int borderWidth = 3;
-    private Vector2 gridSize = new Vector2(20, 10);
+    private Vector2 gridSize = new Vector2(15, 10);
     private GameObject player;
 
     //accessor variables

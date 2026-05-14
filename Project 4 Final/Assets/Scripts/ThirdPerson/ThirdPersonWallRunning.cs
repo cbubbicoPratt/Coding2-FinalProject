@@ -33,6 +33,12 @@ public class ThirdPersonWallRunning : MonoBehaviour
     private CharacterController _controller;
     public Image wallBar;
 
+
+    private void OnEnable()
+    {
+        ThirdPersonMovement.onReset += WallTimerReset;
+    }
+
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
@@ -116,5 +122,10 @@ public class ThirdPersonWallRunning : MonoBehaviour
         _buffer = false;
         _wait = false;
         yield break;
+    }
+
+    private void WallTimerReset(bool doReset)
+    {
+        wallRunTimer = maxWallRunTime;
     }
 }

@@ -8,6 +8,7 @@ public class ThirdPersonMovement : MonoBehaviour
     private CharacterController _controller;
     public Transform cam;
     private ThirdPersonWallRunning _tpwr;
+    private ThirdPersonSliding _tps;
 
     [Header("Movement")]
     public float speed = 6f;
@@ -31,6 +32,7 @@ public class ThirdPersonMovement : MonoBehaviour
         _controller = GetComponent<CharacterController>();
         _startPos = transform.position;
         _tpwr = GetComponent<ThirdPersonWallRunning>();
+        _tps = GetComponent<ThirdPersonSliding>();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -54,15 +56,20 @@ public class ThirdPersonMovement : MonoBehaviour
             _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * _gravity);
         } else if (isJumping && isWallRunning)
         {
-            if(_tpwr.wallLeft)
+            if (_tpwr.wallLeft)
             {
                 _controller.Move(transform.right * (175 * Time.deltaTime));
-            } 
-            else if(_tpwr.wallRight)
+            }
+            else if (_tpwr.wallRight)
             {
                 _controller.Move(-transform.right * (175 * Time.deltaTime));
             }
             _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * _gravity);
+        } else if (isJumping && isSliding)
+        {
+            isSliding = false;
+            _verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * _gravity);
+            _controller.Move(_tps.storedInput);
         } else isJumping = false;
         Vector3 inputDirection = new Vector3(moveInput.x, 0f, moveInput.y).normalized;
         Vector3 moveDir;

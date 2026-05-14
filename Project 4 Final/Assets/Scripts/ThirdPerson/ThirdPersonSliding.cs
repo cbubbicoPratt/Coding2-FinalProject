@@ -8,6 +8,7 @@ public class ThirdPersonSliding : MonoBehaviour
     private Transform _playerObj;
     private CharacterController _controller;
     private ThirdPersonMovement _player;
+    public Transform camTransform;
 
     [Header("Sliding")]
     //public float maxSlideTime;
@@ -66,7 +67,8 @@ public class ThirdPersonSliding : MonoBehaviour
         Vector3 inputDirection;
         if (_verticalInput == 0 && _horizontalInput == 0)
         {
-            inputDirection = orientation.forward;
+            inputDirection = camTransform.forward;
+            _controller.transform.rotation = Quaternion.Euler(0f, camTransform.eulerAngles.y, 0f);
         }
         else
         {

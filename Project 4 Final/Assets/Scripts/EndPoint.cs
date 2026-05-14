@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class EndPoint : MonoBehaviour
 {
-    public CCPlayer player;
+    private ThirdPersonMovement _player;
     private RoundManager roundManager;
 
     private void Awake()
     {
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<CCPlayer>();
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<ThirdPersonMovement>();
         roundManager = GameObject.FindFirstObjectByType<RoundManager>();
     }
 
@@ -15,9 +15,9 @@ public class EndPoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            player.ResetPosition();
-            Debug.Log(player.transform.position);
+            _player.ResetPosition();
             roundManager.NewRound();
+            Debug.Log("Reset");
             Destroy(gameObject);
         }
     }

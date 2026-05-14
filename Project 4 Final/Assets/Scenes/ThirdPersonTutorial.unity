@@ -2077,8 +2077,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2214,8 +2214,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -4765,7 +4765,7 @@ MonoBehaviour:
   wallLeft: 0
   wallRight: 0
   orientation: {fileID: 26032445}
-  wallBar: {fileID: 0}
+  wallBar: {fileID: 1023937303}
 --- !u!114 &1809860745
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4781,7 +4781,7 @@ MonoBehaviour:
   camTransform: {fileID: 1988831201}
   dashSpeed: 75
   maxStamina: 1
-  staminaBar: {fileID: 0}
+  staminaBar: {fileID: 372935719}
 --- !u!114 &1809860746
 MonoBehaviour:
   m_ObjectHideFlags: 0

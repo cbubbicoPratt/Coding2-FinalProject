@@ -7,7 +7,7 @@ public class TutorialEnd : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            Debug.Log("ourgh");
+            //simple scene changer for tutorial
             SceneManager.LoadScene(1);
         }
     }

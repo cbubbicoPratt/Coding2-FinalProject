@@ -18,6 +18,8 @@ public class RoundManager : MonoBehaviour
 
     public void NewRound()
     { 
+        //increase round and update text
+        //new round = new path generation
         round++;
         roundText.text = "Round: " + round;
         pathGen.GenerateMap();

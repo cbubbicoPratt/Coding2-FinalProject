@@ -15,6 +15,10 @@ public class EndPoint : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
+            //reset round when making contact with player
+            //bring player to start
+            //start a new round to regenerate path
+            //destroy self
             _player.ResetPosition();
             roundManager.NewRound();
             Debug.Log("Reset");

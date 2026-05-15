@@ -36,6 +36,7 @@ public class ThirdPersonWallRunning : MonoBehaviour
 
     private void OnEnable()
     {
+        //reset wall timer when we reset position
         ThirdPersonMovement.onReset += WallTimerReset;
     }
 
@@ -47,16 +48,22 @@ public class ThirdPersonWallRunning : MonoBehaviour
     }
     private void Update()
     {
+        if (ButtonManager.startScreen && GameObject.FindFirstObjectByType<ButtonManager>() != null) return;
         CheckForWall();
         StateMachine();
         WallRunStamina();
+
+        //keep wall run time within range
         if (wallRunTimer < 0) wallRunTimer = 0;
         if (wallRunTimer > maxWallRunTime) wallRunTimer = maxWallRunTime;
+
+        //fill out bar accordingly
         wallBar.fillAmount = wallRunTimer / maxWallRunTime;
     }
 
     private void CheckForWall()
     {
+        //casts to check for walls on sides of player
         wallRight = Physics.Raycast(transform.position, orientation.right, out _rightWallHit, wallCheckDistance, whatIsWall);
         wallLeft = Physics.Raycast(transform.position, -orientation.right, out _leftWallHit, wallCheckDistance, whatIsWall);
     }
@@ -98,12 +105,16 @@ public class ThirdPersonWallRunning : MonoBehaviour
 
     private void WallRunStamina()
     {
+        //buffer starts whenever player isn't grounded
         if (!_controller.isGrounded) _buffer = true;
+        //decrease stamina
         if (_player.isWallRunning)
         {
             wallRunTimer -= 2 * Time.deltaTime;
+            //wait to refill if we start wallrunning
             _wait = true;
         }
+        //refill stamina after buffer
         else if (wallRunTimer < maxWallRunTime)
         {
             if (_controller.isGrounded && _buffer) StartCoroutine(SecondBuffer());
@@ -116,8 +127,11 @@ public class ThirdPersonWallRunning : MonoBehaviour
 
     IEnumerator SecondBuffer()
     {
+        //same logic as dash stamina
+        //first wait, then turn off logic so stamina refills
         _wait = true;
         yield return new WaitForSeconds(1);
+        //if we are wallrunning during buffer, stop logic
         if (_player.isWallRunning) yield break;
         _buffer = false;
         _wait = false;
